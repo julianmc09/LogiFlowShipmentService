@@ -4,6 +4,8 @@ dependencies {
 	implementation project(':reactive-web')
     implementation project(':model')
     implementation project(':usecase')
+    implementation project(':mongo-repository')
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
     implementation 'org.springframework.boot:spring-boot-starter'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     testImplementation 'com.tngtech.archunit:archunit:1.4.1'

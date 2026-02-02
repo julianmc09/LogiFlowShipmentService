@@ -45,3 +45,50 @@ Los entry points representan los puntos de entrada de la aplicación o el inicio
 Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
 
 **Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+
+---
+
+# 🚀 Cómo Probar este Microservicio
+
+## 1. Prerrequisitos
+Este proyecto utiliza **MongoDB** como base de datos. Para facilitar el desarrollo, se incluye un archivo `docker-compose.yml`.
+
+Asegúrate de tener Docker instalado y ejecuta:
+```bash
+docker-compose up -d
+```
+
+## 2. Iniciar la Aplicación
+Usa el wrapper de Gradle incluido:
+```bash
+./gradlew bootRun
+```
+*La aplicación iniciará en el puerto 8080.*
+
+## 3. Ejemplos de Uso (cURL)
+
+### Crear un Envío (POST)
+```bash
+curl -X POST http://localhost:8080/api/shipments \
+  -H "Content-Type: application/json" \
+  -d '{
+        "id": "ENVIO-001",
+        "origin": {"city": "Medellin", "address": "Calle 10"},
+        "destination": {"city": "Bogota", "address": "Carrera 7"}
+      }'
+```
+
+### Actualizar Estado (PATCH)
+```bash
+curl -X PATCH http://localhost:8080/api/shipments/ENVIO-001/status \
+  -H "Content-Type: application/json" \
+  -d '{"newStatus": "DELIVERED"}'
+```
+*Estados válidos: `IN_TRANSIT`, `DELIVERED`, `INCIDENT`.*
+
+## 4. Verificar Base de Datos
+Puedes usar **MongoDB Compass** conectando a `mongodb://localhost:27017`.
+O desde la terminal:
+```bash
+docker exec -it mongodb mongosh logiflow_shipment --eval "db.shipments.find()"
+```

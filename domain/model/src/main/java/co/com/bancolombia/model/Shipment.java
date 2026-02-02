@@ -7,18 +7,15 @@ public class Shipment {
     private final Location destination;
     private ShipmentStatus status;
 
-    // Crear nuevo shipment
-    public Shipment(String id, Location origin, Location destination) {
+    // Factory method para crear nuevo shipment (Regla de Negocio)
+    public static Shipment newShipment(String id, Location origin, Location destination) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("Id is required");
         }
-        this.id = id;
-        this.origin = origin;
-        this.destination = destination;
-        this.status = ShipmentStatus.IN_TRANSIT;
+        return new Shipment(id, origin, destination, ShipmentStatus.IN_TRANSIT);
     }
 
-    // Rehidratar desde persistencia
+    // Constructor completo (Persistencia / Mapper / Jackson)
     public Shipment(String id, Location origin, Location destination, ShipmentStatus status) {
         this.id = id;
         this.origin = origin;
@@ -38,5 +35,21 @@ public class Shipment {
             throw new IllegalStateException("Delivered shipment cannot have incidents");
         }
         this.status = ShipmentStatus.INCIDENT;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Location getOrigin() {
+        return origin;
+    }
+
+    public Location getDestination() {
+        return destination;
+    }
+
+    public ShipmentStatus getStatus() {
+        return status;
     }
 }

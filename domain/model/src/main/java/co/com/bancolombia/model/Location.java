@@ -15,4 +15,12 @@ public class Location {
         this.city = city;
         this.address = address;
     }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
 }
